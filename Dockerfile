@@ -1,4 +1,4 @@
-FROM emscripten/emsdk:3.1.27
+FROM emscripten/emsdk:4.0.1-arm64
 
 # Avoid warnings by switching to noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
@@ -11,7 +11,7 @@ ARG USER_GID=$USER_UID
 
 # delete emscripten user and create user with sudo privelege that matches current user    
 RUN userdel emscripten \
-    && groupadd -g $USER_GID $USERNAME \
+    && (getent group $USER_GID || groupadd -g $USER_GID $USERNAME) \
     && useradd -ms /bin/bash -u $USER_UID -g $USER_GID $USERNAME \
     && usermod -aG sudo $USERNAME \
     && printf "\n$USERNAME ALL=(ALL) NOPASSWD: ALL\n" >> /etc/sudoers
