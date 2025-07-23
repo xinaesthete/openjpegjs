@@ -41,7 +41,7 @@ function encode(encoder, uncompressedImageFrame, imageFrame, iterations = 1) {
   }
 }
 
-module.exports = {
+export default {
     decode,
     encode
 }

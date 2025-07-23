@@ -30,9 +30,9 @@ Create shell inside openjpegjsbuild container:
 > scripts/docker-sh.sh
 ```
 
-Install node 16 (inside docker shell):
+Install node 22 (inside docker shell):
 ```
-> nvm install 16
+> nvm install 22
 ```
 
 To build WASM (inside docker shell):

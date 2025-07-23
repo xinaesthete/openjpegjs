@@ -1,13 +1,13 @@
 // Copyright (c) Chris Hafey.
 // SPDX-License-Identifier: MIT
 
-let openjpegjs = require('../../dist/openjpegjs.js');
-const codecHelper = require('./codec-helper.js')
-const fs = require('fs')
+import openjpegjs from '../../dist/openjpegjs.js';
+import codecHelper from './codec-helper.js';
+import fs from 'fs';
 
 function decodeFile(openjpeg, imageName, iterations = 1) {
   const encodedImagePath = '../fixtures/j2k/' + imageName + ".j2k"
-  encodedBitStream = fs.readFileSync(encodedImagePath)
+  const encodedBitStream = fs.readFileSync(encodedImagePath)
   const decoder = new openjpeg.J2KDecoder()
   const result = codecHelper.decode(decoder, encodedBitStream, iterations)
   console.log("WASM-decode   " + imageName + " " +  result.decodeTimeMS);

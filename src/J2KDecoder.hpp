@@ -261,6 +261,7 @@ class J2KDecoder {
       opj_decoder_set_strict_mode(l_codec, OPJ_FALSE);
 
       /* Read the main header of the codestream and if necessary the JP2 boxes*/
+      printf("[INFO] Using prototype build of OpenJPEG... no substantial changes as yet.\n");
       if(! opj_read_header(l_stream, l_codec, &image)){
           printf("[ERROR] opj_decompress: failed to read the header\n");
           opj_stream_destroy(l_stream);
