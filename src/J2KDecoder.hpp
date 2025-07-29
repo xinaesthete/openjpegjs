@@ -6,6 +6,7 @@
 #include <exception>
 #include <memory>
 #include <limits.h>
+#include <algorithm>
 
 #include "openjpeg.h"
 #include <string.h>
@@ -327,14 +328,22 @@ class J2KDecoder {
             if(frameInfo_.isSigned) {
               short* pOut = (short*)&decoded_[lineStart];
               for (size_t x = 0; x < sizeAtDecompositionLevel.width; x++) {
-                int val = pIn[x];;
-                pOut[x] = std::max(SHRT_MIN, std::min(val, SHRT_MAX));
+                int val = pIn[x];
+                short outVal = std::max(SHRT_MIN, std::min(val, SHRT_MAX));
+                // Write in big-endian byte order for JavaScript compatibility
+                uint8_t* bytes = (uint8_t*)&pOut[x];
+                bytes[0] = (outVal >> 8) & 0xFF;  // Most significant byte first
+                bytes[1] = outVal & 0xFF;          // Least significant byte second
               }
             } else {
               unsigned short* pOut = (unsigned short*)&decoded_[lineStart];
               for (size_t x = 0; x < sizeAtDecompositionLevel.width; x++) {
-                int val = pIn[x];;
-                pOut[x] = std::max(0, std::min(val, USHRT_MAX));
+                int val = pIn[x];
+                unsigned short outVal = std::max(0, std::min(val, USHRT_MAX));
+                // Write in big-endian byte order for JavaScript compatibility
+                uint8_t* bytes = (uint8_t*)&pOut[x];
+                bytes[0] = (outVal >> 8) & 0xFF;  // Most significant byte first
+                bytes[1] = outVal & 0xFF;          // Least significant byte second
               }
             }
           }
@@ -364,6 +373,23 @@ class J2KDecoder {
             }*/
         }
       }
+
+      // Debug: Print first few values from decoded buffer
+      // printf("[DEBUG] First 10 bytes of decoded buffer: ");
+      // for (size_t i = 0; i < std::min((size_t)10, decoded_.size()); i++) {
+      //   printf("%02X ", decoded_[i]);
+      // }
+      // printf("\n");
+      
+      // // For 16-bit data, also print as 16-bit values
+      // if (frameInfo_.bitsPerSample > 8) {
+      //   printf("[DEBUG] First 5 16-bit values: ");
+      //   unsigned short* pDebug = (unsigned short*)decoded_.data();
+      //   for (size_t i = 0; i < std::min((size_t)5, decoded_.size() / 2); i++) {
+      //     printf("%u ", pDebug[i]);
+      //   }
+      //   printf("\n");
+      // }
 
       opj_stream_destroy(l_stream);
       opj_destroy_codec(l_codec);
