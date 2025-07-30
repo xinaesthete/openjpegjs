@@ -18,7 +18,7 @@ This project uses git submodules to pull in OpenJPEG.  If developing, initialize
 
 This project uses Docker to provide a consistent developer environment.
 
-Create docker container 'openjpegjsbuild'
+Create docker container 'openjpegjsbuild':
 
 ```
 > scripts/docker-build.sh
@@ -28,11 +28,6 @@ Create shell inside openjpegjsbuild container:
 
 ```
 > scripts/docker-sh.sh
-```
-
-Install node 22 (inside docker shell):
-```
-> nvm install 22
 ```
 
 To build WASM (inside docker shell):

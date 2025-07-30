@@ -29,5 +29,6 @@
         -s EXPORTED_RUNTIME_METHODS=[ccall] \
         -s MODULARIZE=1 \
         -s EXPORT_NAME=OpenJPEGWASM \
+        --emit-tsd=openjpegjs.d.ts \
     ")
   
